@@ -33,6 +33,7 @@
                 filter = Number(filter) + val <= 0 ? "none" : Number(filter) + val;
             }
             $('#maxPrice').html(filter);
+            getProducts();
         });
 
         $('#priceFilter').on('click', function(){
@@ -41,8 +42,10 @@
 
         function getProducts() {
             var id = $('#product_table').data('id');
+            var filter = $('#maxPrice').html() == "none" ? "" : "/maxprice/" + $('#maxPrice').html();
+
             $.getJSON({
-                url: "../../api/category/" + id + "/product/discontinued/false",
+                url: "../../api/category/" + id + "/product/discontinued/false" + filter,
                 success: function (response, textStatus, jqXhr) {
                     //console.log(response);
                     $('#product_table').html("");
