@@ -14,8 +14,8 @@
 </table>
 <div id="priceBar" class="border-top border-secondary bg-light p-2 pr-4 text-right">
     Maximum Price: <span id="maxPrice">none</span>
-    <i id="priceDown" class="fas fa-chevron-circle-down ml-1 text-primary"></i>
-    <i id="priceUp" class="fas fa-chevron-circle-up text-primary"></i>
+    <i id="priceDown" data-val="-5" class="fas fa-chevron-circle-down ml-1 text-primary"></i>
+    <i id="priceUp" data-val="5" class="fas fa-chevron-circle-up text-primary"></i>
 </div>
 @section scripts
 {
@@ -23,6 +23,17 @@
     // Turn off ESLint (Windows): Tools - Options - Text Editor - Javascript - Linting
     $(function () {
         getProducts()
+
+        $('#priceUp, #priceDown').on('click', function(){
+            var filter = $('#maxPrice').html();
+            var val = Number($(this).data('val'));
+            if (val > 0){
+                filter = filter == "none" ? val : Number(filter) + val;
+            } else if (filter != "none"){
+                filter = Number(filter) + val <= 0 ? "none" : Number(filter) + val;
+            }
+            $('#maxPrice').html(filter);
+        });
 
         $('#priceFilter').on('click', function(){
             $('#priceBar').toggle();
